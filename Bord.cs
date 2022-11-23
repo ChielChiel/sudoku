@@ -1,9 +1,5 @@
-// public class Bord
-// {
+class Bord {
 
+    public Bord(int[] sudoku_array) {}
 
-
-
-// }
-
-// Console.WriteLine("huts");
+}
