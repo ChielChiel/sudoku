@@ -1,0 +1,15 @@
+/Users/Michiel/Documents/Bachelor KI/Bachelor KI-3/CompIntel/sudoku/bin/Debug/net7.0/sudoku
+/Users/Michiel/Documents/Bachelor KI/Bachelor KI-3/CompIntel/sudoku/bin/Debug/net7.0/sudoku.deps.json
+/Users/Michiel/Documents/Bachelor KI/Bachelor KI-3/CompIntel/sudoku/bin/Debug/net7.0/sudoku.runtimeconfig.json
+/Users/Michiel/Documents/Bachelor KI/Bachelor KI-3/CompIntel/sudoku/bin/Debug/net7.0/sudoku.dll
+/Users/Michiel/Documents/Bachelor KI/Bachelor KI-3/CompIntel/sudoku/bin/Debug/net7.0/sudoku.pdb
+/Users/Michiel/Documents/Bachelor KI/Bachelor KI-3/CompIntel/sudoku/obj/Debug/net7.0/sudoku.csproj.AssemblyReference.cache
+/Users/Michiel/Documents/Bachelor KI/Bachelor KI-3/CompIntel/sudoku/obj/Debug/net7.0/sudoku.GeneratedMSBuildEditorConfig.editorconfig
+/Users/Michiel/Documents/Bachelor KI/Bachelor KI-3/CompIntel/sudoku/obj/Debug/net7.0/sudoku.AssemblyInfoInputs.cache
+/Users/Michiel/Documents/Bachelor KI/Bachelor KI-3/CompIntel/sudoku/obj/Debug/net7.0/sudoku.AssemblyInfo.cs
+/Users/Michiel/Documents/Bachelor KI/Bachelor KI-3/CompIntel/sudoku/obj/Debug/net7.0/sudoku.csproj.CoreCompileInputs.cache
+/Users/Michiel/Documents/Bachelor KI/Bachelor KI-3/CompIntel/sudoku/obj/Debug/net7.0/sudoku.dll
+/Users/Michiel/Documents/Bachelor KI/Bachelor KI-3/CompIntel/sudoku/obj/Debug/net7.0/refint/sudoku.dll
+/Users/Michiel/Documents/Bachelor KI/Bachelor KI-3/CompIntel/sudoku/obj/Debug/net7.0/sudoku.pdb
+/Users/Michiel/Documents/Bachelor KI/Bachelor KI-3/CompIntel/sudoku/obj/Debug/net7.0/sudoku.genruntimeconfig.cache
+/Users/Michiel/Documents/Bachelor KI/Bachelor KI-3/CompIntel/sudoku/obj/Debug/net7.0/ref/sudoku.dll
