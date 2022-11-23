@@ -8,19 +8,19 @@
     "net7.0": []
   },
   "packageFolders": {
-    "/Users/Michiel/.nuget/packages/": {}
+    "C:\\Users\\Ard_Laptop\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/Michiel/Documents/Bachelor KI/Bachelor KI-3/CompIntel/sudoku/sudoku.csproj",
+      "projectUniqueName": "C:\\Users\\Ard_Laptop\\Documents\\kbs\\sudoku\\sudoku.csproj",
       "projectName": "sudoku",
-      "projectPath": "/Users/Michiel/Documents/Bachelor KI/Bachelor KI-3/CompIntel/sudoku/sudoku.csproj",
-      "packagesPath": "/Users/Michiel/.nuget/packages/",
-      "outputPath": "/Users/Michiel/Documents/Bachelor KI/Bachelor KI-3/CompIntel/sudoku/obj/",
+      "projectPath": "C:\\Users\\Ard_Laptop\\Documents\\kbs\\sudoku\\sudoku.csproj",
+      "packagesPath": "C:\\Users\\Ard_Laptop\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Ard_Laptop\\Documents\\kbs\\sudoku\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/Michiel/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\Ard_Laptop\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
@@ -59,7 +59,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.100/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kYheL/8X6NkGwD1DA6AlM93ZkF6vAKZTHHQ6v9r4/BeUXzc/wv98D8OkLxeJhcRFu8MMtBw5HTjxBhZBaANhJQ==",
+  "dgSpecHash": "M4R3vWoc3vCtSpVdRi+2z5TG9CS6u6KJDhcle8IBOtEPOPCd3erFQudYnnCBDlBldXxxFl4obUUjMO0K0ezBeA==",
   "success": true,
-  "projectFilePath": "/Users/Michiel/Documents/Bachelor KI/Bachelor KI-3/CompIntel/sudoku/sudoku.csproj",
+  "projectFilePath": "C:\\Users\\Ard_Laptop\\Documents\\kbs\\sudoku\\sudoku.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
