@@ -2,6 +2,8 @@ class Node
 {
     private bool verplaatsbaar;
     private int getal;
+    private int row;
+    private int column;
     public Node()
     { 
     }
@@ -17,5 +19,18 @@ class Node
         get { return getal; }
         set { getal = value; }
     }
+
+    public int Row
+    {
+        get { return row; }
+        set { row = value; }
+    }
+
+    public int Column
+    {
+        get { return column; }
+        set { column = value; }
+    }
+
 
 }
