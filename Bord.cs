@@ -27,4 +27,18 @@ class Bord {
         this.sudoku = bord;
     }
 
+    public void Print()
+    {
+        string Rij;
+        int aantalRijen = Math.Sqrt(sudoku.Length);
+        for (int i = 0; i < aantalRijen; i++)
+        {
+            Rij = "";   
+            for (int j = 0; j < aantalRijen ; j++)
+            {
+            Rij += sudoku[j].getal.ToString() + " ";
+            }
+            Console.WriteLine(Rij);
+        }
+    }
 }

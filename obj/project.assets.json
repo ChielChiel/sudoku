@@ -8,24 +8,26 @@
     "net7.0": []
   },
   "packageFolders": {
-    "/Users/Michiel/.nuget/packages/": {}
+    "C:\\Users\\karst\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/Michiel/Documents/Bachelor KI/Bachelor KI-3/CompIntel/sudoku/sudoku.csproj",
+      "projectUniqueName": "C:\\Users\\karst\\OneDrive\\Documenten\\GitHub\\Machine learning\\sudoku\\sudoku.csproj",
       "projectName": "sudoku",
-      "projectPath": "/Users/Michiel/Documents/Bachelor KI/Bachelor KI-3/CompIntel/sudoku/sudoku.csproj",
-      "packagesPath": "/Users/Michiel/.nuget/packages/",
-      "outputPath": "/Users/Michiel/Documents/Bachelor KI/Bachelor KI-3/CompIntel/sudoku/obj/",
+      "projectPath": "C:\\Users\\karst\\OneDrive\\Documenten\\GitHub\\Machine learning\\sudoku\\sudoku.csproj",
+      "packagesPath": "C:\\Users\\karst\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\karst\\OneDrive\\Documenten\\GitHub\\Machine learning\\sudoku\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/Michiel/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\karst\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -54,12 +56,7 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "frameworkReferences": {
-          "Microsoft.NETCore.App": {
-            "privateAssets": "all"
-          }
-        },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.100/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
       }
     }
   }
