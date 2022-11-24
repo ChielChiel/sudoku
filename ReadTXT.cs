@@ -1,10 +1,13 @@
 public class ReadFromFile
 {
-    public static void ReadTXT()
+    public static int[,] ReadTXT(System.String link)
     {
         // line to read file
-        string[] lines = System.IO.File.ReadAllLines(@"Sudoku_puzzels_5.txt");
-        int[,] sudoku = new int[5,81];
+        string[] lines = System.IO.File.ReadAllLines(link);
+        // can be made global. But size needs to defined.
+        int numberOfGraphs = 5;
+        int numberOfValues = 81;
+        int[,] sudoku = new int[numberOfGraphs,numberOfValues];
         int i = 0;
         int j = 0;
 
@@ -31,14 +34,6 @@ public class ReadFromFile
             }
         }
 
-        // Testing purposes only
-        for (int k = 0; k < 5; k++)
-        {        
-            for (int s = 0; s < 81; s++)
-            {
-                System.Console.Write(sudoku[k,s]);
-            }
-            System.Console.WriteLine("");
-        }
+        return sudoku;
     }
 }
