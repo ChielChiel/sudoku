@@ -2,6 +2,9 @@
 
 4 klassen:
 
+dillema: Houden we het algoritme dom door niet bij te houden welke swaps er al zijn geweest.
+
+
 ```csharp
 Class Node()
 {
