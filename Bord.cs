@@ -13,7 +13,7 @@ class Bord {
         Console.WriteLine(start);
         int end = this.GetFlatPosition(start);
         Console.WriteLine(end);
-
+        this.Print();
         // int[] test_sdk = new int[81];
         // for (int i = 0; i < 81; i++)
         // {
@@ -25,8 +25,27 @@ class Bord {
         // }
 
 
-    }
 
+    }
+    public void Print()
+    {
+        string Rij;
+        int aantalRijen = (int) Math.Sqrt(sudoku.Length);
+        for (int i = 0; i < aantalRijen; i++)
+        {
+            Rij = "";
+            for (int j = 0; j < aantalRijen; j++)
+            {
+                if ((j + (i * aantalRijen)) % 3 == 0)
+                    Rij += "|";
+                Rij += sudoku[j+(i*aantalRijen)].Getal.ToString() + " ";
+            }
+            if ((i % 3) == 0)
+                Console.WriteLine("--------------------");
+           
+            Console.WriteLine(Rij);
+        }
+    }
 
     // Just creates a starting sudoku.
     public Node[] Create_Board(int[] sudoku_array) {
