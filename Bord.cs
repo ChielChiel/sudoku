@@ -20,6 +20,9 @@ class Bord {
         //     test_sdk[i] = i + 1;
         // }
         // Node[] test_sudoku = this.Create_Board(test_sdk);
+
+
+
         // foreach(Node sd in test_sudoku) {
         //     Console.Write("(" + "[" + sd.Row + ";" + sd.Column + "] "  + sd.Getal + " " + sd.Verplaatsbaar + "),");
         // }
