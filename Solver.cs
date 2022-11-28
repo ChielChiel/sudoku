@@ -32,6 +32,9 @@ class Solver {
         while (true)
         {
             Bord neighbour = this.Swap(current);
+
+            // Uiteindelijk is het het handigst als "evaluatie" een property wordt van het object Sudoku.
+            // Dan hoef je m niet de hele tijd opnieuw te berekenen
             if(this.evalutie(neighbour) <= this.evalutie(current)) {
                 current = neighbour;
             }
@@ -153,9 +156,10 @@ class Solver {
 
     private Bord Swap(Bord problem) {
         Bord swapped = problem;
-        // Swap() | We zien wel.
+        // Swap() | @We zien wel.
         //  blok = GetBlok()
         //  try swaps
+        //  Update evaluatiefunctie
         // return swaps
 
         return swapped;
