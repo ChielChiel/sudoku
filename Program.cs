@@ -4,6 +4,15 @@ using System.Linq;
 Console.WriteLine("Hello, World!");
 
 // 5 and 81 can be defined globally
+Console.WriteLine(0 % 9);
+Console.WriteLine(1 % 9);
+Console.WriteLine(2 % 9);
+Console.WriteLine(3 % 9);
+Console.WriteLine(4 % 9);
+Console.WriteLine(5 % 9);
+Console.WriteLine(8 % 9);
+Console.WriteLine(9 % 9);
+Console.WriteLine(10 % 9);
 int[,] sudoku = new int[5,81];
 sudoku = ReadFromFile.ReadTXT(@"Sudoku_puzzels_5.txt");
 
@@ -19,6 +28,7 @@ sudoku = ReadFromFile.ReadTXT(@"Sudoku_puzzels_5.txt");
 
 
 Bord testbord = new Bord(sudoku.GetRow(0));
+new Solver(testbord);
 
 
 // Aangepast van https://stackoverflow.com/a/1183086/8902440

@@ -1,34 +1,62 @@
-class Solver
-{
+using System;
+using System.Collections.Generic;
+class Solver {
     
 
 
-// oplositeratie()
-// Kies random blok
-// probeer alle swaps
-//      res = Swap(sudoku.copy())
-//      Bereken de evaluatiewaarde(res)
-//      Onthou de evaluatiewaarde
-//      If evalutie = same_for_past(10):
-//          random_walk()
+    public Solver(Bord initial) {
+        initial.CalculateEvaluatie();
 
 
-// random_walk():
-//  random blok
-//  random swap
-// 
-
-// update array(res)
-
-
-// Swap() | We zien wel.
-//  blok = GetBlok()
-//  try swaps
-// return swaps
+    }
+    // oplositeratie()
+    // Kies random blok
+    // probeer alle swaps
+    //      res = Swap(sudoku.copy())
+    //      Bereken de evaluatiewaarde(res)
+    //      Onthou de evaluatiewaarde
+    //      If evalutie = same_for_past(10):
+    //          random_walk()
 
 
-//Class bord:
-// Invullen van sudoku met ranodom getallen. | @ardjuhh
+    // random_walk():
+    //  random blok
+    //  random swap
+    // 
+
+    // update array(res)
+
+    // Methode moet nog uitgewerkt worden. Maar de basis staat.
+    public Bord HillClimb(Bord problem) {
+        Bord current = problem;
+        while (true)
+        {
+            Bord neighbour = this.Swap(current);
+
+            if(neighbour.evaluatie <= current.evaluatie) {
+                current = neighbour;
+            }
+        }
+    }
+
+
+    private Bord Swap(Bord problem) {
+        Bord swapped = problem;
+        // Swap() | @We zien wel.
+        //  blok = GetBlok()
+        //  try swaps
+        // new_sudoku.update(swap_from, swap_to);
+        //  Update evaluatiefunctie
+        // return swaps
+
+        return swapped;
+    }
+
+
+
+
+    //Class bord:
+    // Invullen van sudoku met ranodom getallen. | @ardjuhh
 
 
 }
