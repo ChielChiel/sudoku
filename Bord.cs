@@ -140,7 +140,7 @@ class Bord {
 
     // In plaats van voor een veranderde sudoku alle evaluaties opnieuw te berekenen, kunnen ook alleen de desbetreffende evaluaties voor
     // de verandere rows en columns herberekend worden.
-    public int evalutie_update(Coordinate swap_1, Coordinate swap_2) {
+    public int UpdateEvaluatie(Coordinate swap_1, Coordinate swap_2) {
         // Initialise de start stap waarden voor beide rows en columns
         int start_c_1 = swap_1.X;
         int start_r_1 = swap_1.Y;
