@@ -23,17 +23,17 @@ class Bord {
         int end = this.GetFlatPosition(start);
         Console.WriteLine(end);
         this.Print();
-        
-       
-        
-        
-       // updateBlokken();
-        // int[] test_sdk = new int[81];
-        // for (int i = 0; i < 81; i++)
-        // {
-        //     test_sdk[i] = i + 1;
-        // }
-        // Node[] test_sudoku = this.Create_Board(test_sdk);
+
+
+
+
+        updateBlokken();
+       // int[] test_sdk = new int[81];
+       // for (int i = 0; i < 81; i++)
+       // {
+       //     test_sdk[i] = i + 1;
+       // }
+       // Node[] test_sudoku = this.Create_Board(test_sdk);
 
 
 
@@ -54,22 +54,16 @@ class Bord {
         int huidigeRow = -1;
 
         int nummerBlok = -1;
-
+        for (int i = 0; i < aantalRijen; i++)
+            blokken.Add(blok);
         for (int i = 0; i < sudoku.Length; i++)
         {
-
-            if ((sudoku[i].Column - 1) % 3 == 0 && sudoku[i].Row % 3 == 0)
-            {
-                blokken.Add(blok);
-                nummerBlok++;
-            }
-
-           
+            nummerBlok = (sudoku[i].Row / 3) * 3 + (sudoku[i].Column-1) / 3;
             blokken[nummerBlok].Add(i);
-            Console.WriteLine(blokken[nummerBlok]);
         }
 
-
+        for (int i = 0; i < aantalRijen; i++)
+            Console.WriteLine(blokken[0][i]);
 
     }
     public void Print()
