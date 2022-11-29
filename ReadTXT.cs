@@ -49,11 +49,12 @@ public class ReadFromFile
         // per graph
         for (int k = 0; k < numberOfGraphs; k++)
         {        
+            const int maxStepSize = 21;
             int begin = 0;
-            int end = 21;
+            int end = maxStepSize;
             int position = 0;
             int counter = 0;
-            const int maxStepSize = 21;
+            
 
             while(true)
             {
