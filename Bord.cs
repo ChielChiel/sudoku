@@ -1,9 +1,12 @@
+using System.Collections.Generic;
+using System.Globalization;
+
 class Bord {
 
     public Node[] sudoku;
     public Dictionary<string, int> evaluatie_waarden;
     public int evaluatie;
-
+    public List<List<int>> blokken;
 
     public Bord(int[] sudoku_array) {
         this.sudoku = this.Create_Board(sudoku_array);
@@ -20,6 +23,11 @@ class Bord {
         int end = this.GetFlatPosition(start);
         Console.WriteLine(end);
         this.Print();
+        
+       
+        
+        
+       // updateBlokken();
         // int[] test_sdk = new int[81];
         // for (int i = 0; i < 81; i++)
         // {
@@ -32,6 +40,34 @@ class Bord {
         // foreach(Node sd in test_sudoku) {
         //     Console.Write("(" + "[" + sd.Row + ";" + sd.Column + "] "  + sd.Getal + " " + sd.Verplaatsbaar + "),");
         // }
+
+
+
+    }
+    //TODO
+    public void updateBlokken()
+    {
+
+        blokken = new List<List<int>>();
+        List<int> blok = new List<int>();
+        int aantalRijen = (int)Math.Sqrt(sudoku.Length);
+        int huidigeRow = -1;
+
+        int nummerBlok = -1;
+
+        for (int i = 0; i < sudoku.Length; i++)
+        {
+
+            if ((sudoku[i].Column - 1) % 3 == 0 && sudoku[i].Row % 3 == 0)
+            {
+                blokken.Add(blok);
+                nummerBlok++;
+            }
+
+           
+            blokken[nummerBlok].Add(i);
+            Console.WriteLine(blokken[nummerBlok]);
+        }
 
 
 
