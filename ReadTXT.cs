@@ -86,12 +86,12 @@ public class ReadFromFile
                     }
 
                     // test purposes //////////
-                    System.Console.Write(" ");
-                    foreach (var h in arrayA)
-                    {
-                        Console.Write(h);
-                    }
-                    System.Console.WriteLine(" ");
+                    // System.Console.Write(" ");
+                    // foreach (var h in arrayA)
+                    // {
+                    //     Console.Write(h);
+                    // }
+                    // System.Console.WriteLine(" ");
                     ////////////////////////////
                     
                     if (begin + counter == (numberOfValues/3)) // upper 3 blocks cleared
@@ -121,12 +121,12 @@ public class ReadFromFile
                 
                 // place flat array in a block
                 arrayA[position] = sudoku[k,begin+counter];
-                System.Console.Write(arrayA[position]);
+                // System.Console.Write(arrayA[position]);
                 
                 counter++;
                 position++;
             }
-            System.Console.WriteLine("");
+            //System.Console.WriteLine("");
         }
 
         return sudoku;
