@@ -49,13 +49,11 @@ class Bord {
     {
 
         blokken = new List<List<int>>();
-        List<int> blok = new List<int>();
         int aantalRijen = (int)Math.Sqrt(sudoku.Length);
-        int huidigeRow = -1;
 
         int nummerBlok = -1;
         for (int i = 0; i < aantalRijen; i++)
-            blokken.Add(blok);
+            blokken.Add(new List<int>());
         for (int i = 0; i < sudoku.Length; i++)
         {
             nummerBlok = (sudoku[i].Row / 3) * 3 + (sudoku[i].Column-1) / 3;
