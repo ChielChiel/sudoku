@@ -22,12 +22,16 @@ class Bord {
         Console.WriteLine(start);
         int end = this.GetFlatPosition(start);
         Console.WriteLine(end);
+
+        updateBlokken();
+        fillSudoku();
         this.Print();
 
 
 
 
-        updateBlokken();
+        
+
        // int[] test_sdk = new int[81];
        // for (int i = 0; i < 81; i++)
        // {
@@ -47,7 +51,6 @@ class Bord {
     //TODO
     public void updateBlokken()
     {
-
         blokken = new List<List<int>>();
         int aantalRijen = (int)Math.Sqrt(sudoku.Length);
 
@@ -59,11 +62,34 @@ class Bord {
             nummerBlok = (sudoku[i].Row / 3) * 3 + (sudoku[i].Column-1) / 3;
             blokken[nummerBlok].Add(i);
         }
-
-        for (int i = 0; i < aantalRijen; i++)
-            Console.WriteLine(blokken[0][i]);
-
     }
+
+    public void fillSudoku() // function for filling the sudoku with random numbers
+    {
+        int numberOfRows = (int)Math.Sqrt(sudoku.Length);
+        int[] arrayA = new int[9];
+        int[] arrayB = new int[9] {1,2,3,4,5,6,7,8,9};
+
+        for (int j = 0; j < numberOfRows; j++)
+        {
+            for (int i = 0; i < numberOfRows; i++)
+                arrayA[i] = sudoku[blokken[j][i]].Getal; // fill a temporary array with the values of a block
+
+            IEnumerable<int> difference = arrayB.Except(arrayA); // Checks the difference between a given block and a full block
+
+            int nextElement = 0;
+            foreach (var g in arrayA) // looping through the array
+            {
+                if (g == 0) // if zero then replace it
+                {
+                    arrayA[nextElement] = difference.ElementAt(0); // fills the temporary array with the missing numbers
+                    sudoku[blokken[j][nextElement]].Getal = arrayA[nextElement]; // fills the flat array with the temporary array
+                }
+                nextElement++;
+            }
+        }
+    }
+
     public void Print()
     {
         string Rij;
