@@ -1,13 +1,17 @@
 using System.Collections.Generic;
 using System.Globalization;
 
-class Bord {
+class Bord : ICloneable
+{
 
     public Node[] sudoku;
     public Dictionary<string, int> evaluatie_waarden;
     public int evaluatie;
     public List<List<int>> blokken;
-
+    public object Clone()
+    {
+        return this.MemberwiseClone();
+    }
     public Bord(int[] sudoku_array) {
         this.sudoku = this.Create_Board(sudoku_array);
 
@@ -24,6 +28,7 @@ class Bord {
         Console.WriteLine(end);
 
         updateBlokken();
+        Print();
         fillSudoku();
         this.Print();
 
@@ -60,7 +65,17 @@ class Bord {
         for (int i = 0; i < sudoku.Length; i++)
         {
             nummerBlok = (sudoku[i].Row / 3) * 3 + (sudoku[i].Column-1) / 3;
+<<<<<<< Updated upstream
             blokken[nummerBlok].Add(i);
+=======
+            if (alleenSwappebleGetallen)
+            {
+                if (sudoku[i].Verplaatsbaar)
+                    blokken[nummerBlok].Add(i);
+            }
+            else
+                blokken[nummerBlok].Add(i);
+>>>>>>> Stashed changes
         }
     }
 
