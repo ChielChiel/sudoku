@@ -54,7 +54,7 @@ class Bord : ICloneable
 
     }
     //TODO
-    public void updateBlokken()
+    public void updateBlokken(bool alleenSwappebleGetallen = false)
     {
         blokken = new List<List<int>>();
         int aantalRijen = (int)Math.Sqrt(sudoku.Length);
@@ -65,9 +65,9 @@ class Bord : ICloneable
         for (int i = 0; i < sudoku.Length; i++)
         {
             nummerBlok = (sudoku[i].Row / 3) * 3 + (sudoku[i].Column-1) / 3;
-<<<<<<< Updated upstream
+
             blokken[nummerBlok].Add(i);
-=======
+
             if (alleenSwappebleGetallen)
             {
                 if (sudoku[i].Verplaatsbaar)
@@ -75,7 +75,6 @@ class Bord : ICloneable
             }
             else
                 blokken[nummerBlok].Add(i);
->>>>>>> Stashed changes
         }
     }
 
