@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Diagnostics;
+
 
 class Solver {
     
@@ -32,7 +33,11 @@ class Solver {
         // /int[] past_ten_toestand = {evaluatie_waarden_van_vroeger}
         
         Bord current = problem;
-        while (true)
+        Bord neighbour;
+        Bord rnd_walk_temp;
+        bool alleenSwappebleGetallen = true;
+        problem.updateBlokken(alleenSwappebleGetallen);
+        while (!stop_criterea)
         {
             Bord neighbour = this.Swap(current);
 
@@ -44,6 +49,8 @@ class Solver {
 
 
     private Bord Swap(Bord problem, bool random_walk = false) {
+
+        Bord beste_tot_nu_toe = (Bord)problem.Clone();
         // bijhouden beste_tot_nu_toe
         // voordat swap, copy sudoku maken
         // dan swappen
@@ -54,19 +61,37 @@ class Solver {
 
 
         Random rnd = new Random();
-        Bord swapped = problem;
+        int bloknummer = rnd.Next(0, problem.blokken.Count- 1);
+        List<int> blok = problem.blokken[bloknummer];
+        List<int[]> result = new List<int[]>();
+
+        foreach (int i in blok)
+            Console.WriteLine(i);
+        for (int i = 0; i < blok.Count - 1; i++)
+        {
+            for (int j = i + 1; j < blok.Count; j++)
+            {
+                (problem.sudoku[blok[i]], problem.sudoku[blok[j]]) = (problem.sudoku[blok[j]], problem.sudoku[blok[i]]);
+                Coordinate a = problem.GetCoordinate(blok[j]);
+                Coordinate b = problem.GetCoordinate(blok[i]);
+                //Wat moet ik hier aan UpdateEvaluatie() meegeven? De coordinaten van de geswapte dingen?
+                  if (problem.UpdateEvaluatie(a,b) < beste_tot_nu_toe.evaluatie)
+                       beste_tot_nu_toe = problem;
+            }
+        }
+       
         // Swap() | @We zien wel.
-        int []blok = GetBlok();
+
+
         //  try swaps
         // new_sudoku.update(swap_from, swap_to);
         //  Update evaluatiefunctie
         // return swaps
-        int first = rnd.Next(0, blok.Length-1);
-        int second = rnd.Next(0, blok.Length-1);
-        (swapped.sudoku[blok[first]], swapped.sudoku[blok[second]]) = (swapped.sudoku[blok[second]], swapped.sudoku[blok[first]]);
+
+        //(swapped.sudoku[blok[first]], swapped.sudoku[blok[second]]) = (swapped.sudoku[blok[second]], swapped.sudoku[blok[first]]);
 
         // swapped.UpdateEvaluatie()
-        return swapped;
+        return beste_tot_nu_toe;
     }
 
     private int[] GetBlok(bool returnAll = false)
