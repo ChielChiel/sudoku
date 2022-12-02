@@ -27,11 +27,6 @@ class Bord {
         fillSudoku();
         this.Print();
 
-
-
-
-        
-
        // int[] test_sdk = new int[81];
        // for (int i = 0; i < 81; i++)
        // {
@@ -49,51 +44,58 @@ class Bord {
 
     }
     //TODO
-    public void updateBlokken(bool alleenSwappebleGetallen = false)
+    public void updateBlokken(bool alleenSwappebleGetallen = true)
     {
-        blokken = new List<List<int>>();
-        int aantalRijen = (int)Math.Sqrt(sudoku.Length);
+        this.blokken = new List<List<int>>();
+        int aantalRijen = (int)Math.Sqrt(this.sudoku.Length);
 
         int nummerBlok = -1;
-        for (int i = 0; i < aantalRijen; i++)
-            blokken.Add(new List<int>());
+        for (int i = 0; i < aantalRijen; i++) {
+            this.blokken.Add(new List<int>());
+        }
         
-        for (int i = 0; i < sudoku.Length; i++)
+        for (int i = 0; i < this.sudoku.Length; i++)
         {
-            nummerBlok = (sudoku[i].Row / 3) * 3 + (sudoku[i].Column-1) / 3;
-            if (alleenSwappebleGetallen)
-                if (sudoku[i].Verplaatsbaar)
-                    blokken[nummerBlok].Add(i);
-                else
-                    blokken[nummerBlok].Add(i);
+            nummerBlok = (this.sudoku[i].Row / 3) * 3 + (this.sudoku[i].Column-1) / 3;
+            if (alleenSwappebleGetallen) {
+                if (this.sudoku[i].Verplaatsbaar) {
+                    this.blokken[nummerBlok].Add(i);
+                }
+                else {
+                    this.blokken[nummerBlok].Add(i);
+                }
+            }
         }
     }
 
     public void fillSudoku() // function for filling the sudoku with random numbers
-    {
-        int numberOfRows = (int)Math.Sqrt(sudoku.Length);
-        int[] arrayA = new int[9];
-        int[] arrayB = new int[9] {1,2,3,4,5,6,7,8,9};
+     {
+         int numberOfRows = (int)Math.Sqrt(this.sudoku.Length);
+         Console.WriteLine("huts:" + numberOfRows);
+         int[] arrayA = new int[9];
+         int[] arrayB = new int[9] {1,2,3,4,5,6,7,8,9};
 
-        for (int j = 0; j < numberOfRows; j++)
-        {
-            for (int i = 0; i < numberOfRows; i++)
+         for (int j = 0; j < numberOfRows; j++)
+         {
+             for (int i = 0; i < numberOfRows; i++) {
+                Console.WriteLine("niet kaas: " + blokken[j][i]);
                 arrayA[i] = sudoku[blokken[j][i]].Getal; // fill a temporary array with the values of a block
+             }
 
-            IEnumerable<int> difference = arrayB.Except(arrayA); // Checks the difference between a given block and a full block
+             IEnumerable<int> difference = arrayB.Except(arrayA); // Checks the difference between a given block and a full block
 
-            int nextElement = 0;
-            foreach (var g in arrayA) // looping through the array
-            {
-                if (g == 0) // if zero then replace it
-                {
-                    arrayA[nextElement] = difference.ElementAt(0); // fills the temporary array with the missing numbers
-                    sudoku[blokken[j][nextElement]].Getal = arrayA[nextElement]; // fills the flat array with the temporary array
-                }
-                nextElement++;
-            }
-        }
-    }
+             int nextElement = 0;
+             foreach (var g in arrayA) // looping through the array
+             {
+                 if (g == 0) // if zero then replace it
+                 {
+                     arrayA[nextElement] = difference.ElementAt(0); // fills the temporary array with the missing numbers
+                     sudoku[blokken[j][nextElement]].Getal = arrayA[nextElement]; // fills the flat array with the temporary array
+                 }
+                 nextElement++;
+             }
+         }
+     }
 
     public void Print()
     {
