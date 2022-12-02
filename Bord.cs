@@ -32,11 +32,6 @@ class Bord : ICloneable
         fillSudoku();
         this.Print();
 
-
-
-
-        
-
        // int[] test_sdk = new int[81];
        // for (int i = 0; i < 81; i++)
        // {
@@ -46,7 +41,7 @@ class Bord : ICloneable
 
 
 
-        // foreach(Node sd in this.sudoku) {
+        // foreach(Node sd in test_sudoku) {
         //     Console.Write("(" + "[" + sd.Row + ";" + sd.Column + "] "  + sd.Getal + " " + sd.Verplaatsbaar + "),");
         // }
 
@@ -54,55 +49,59 @@ class Bord : ICloneable
 
     }
     //TODO
-    public void updateBlokken(bool alleenSwappebleGetallen = false)
+    public void updateBlokken(bool alleenSwappebleGetallen = true)
     {
-        blokken = new List<List<int>>();
-        int aantalRijen = (int)Math.Sqrt(sudoku.Length);
+        this.blokken = new List<List<int>>();
+        int aantalRijen = (int)Math.Sqrt(this.sudoku.Length);
 
         int nummerBlok = -1;
-        for (int i = 0; i < aantalRijen; i++)
-            blokken.Add(new List<int>());
-        for (int i = 0; i < sudoku.Length; i++)
+
+        for (int i = 0; i < aantalRijen; i++) {
+            this.blokken.Add(new List<int>());
+        }
+        
+        for (int i = 0; i < this.sudoku.Length; i++)
         {
-            nummerBlok = (sudoku[i].Row / 3) * 3 + (sudoku[i].Column-1) / 3;
-
-            blokken[nummerBlok].Add(i);
-
-            if (alleenSwappebleGetallen)
-            {
-                if (sudoku[i].Verplaatsbaar)
-                    blokken[nummerBlok].Add(i);
+            nummerBlok = (this.sudoku[i].Row / 3) * 3 + (this.sudoku[i].Column-1) / 3;
+            if (alleenSwappebleGetallen) {
+                if (this.sudoku[i].Verplaatsbaar) {
+                    this.blokken[nummerBlok].Add(i);
+                }
+                else {
+                    this.blokken[nummerBlok].Add(i);
+                }
             }
-            else
-                blokken[nummerBlok].Add(i);
         }
     }
 
     public void fillSudoku() // function for filling the sudoku with random numbers
-    {
-        int numberOfRows = (int)Math.Sqrt(sudoku.Length);
-        int[] arrayA = new int[9];
-        int[] arrayB = new int[9] {1,2,3,4,5,6,7,8,9};
+     {
+         int numberOfRows = (int)Math.Sqrt(this.sudoku.Length);
+         Console.WriteLine("huts:" + numberOfRows);
+         int[] arrayA = new int[9];
+         int[] arrayB = new int[9] {1,2,3,4,5,6,7,8,9};
 
-        for (int j = 0; j < numberOfRows; j++)
-        {
-            for (int i = 0; i < numberOfRows; i++)
+         for (int j = 0; j < numberOfRows; j++)
+         {
+             for (int i = 0; i < numberOfRows; i++) {
+                Console.WriteLine("niet kaas: " + blokken[j][i]);
                 arrayA[i] = sudoku[blokken[j][i]].Getal; // fill a temporary array with the values of a block
+             }
 
-            IEnumerable<int> difference = arrayB.Except(arrayA); // Checks the difference between a given block and a full block
+             IEnumerable<int> difference = arrayB.Except(arrayA); // Checks the difference between a given block and a full block
 
-            int nextElement = 0;
-            foreach (var g in arrayA) // looping through the array
-            {
-                if (g == 0) // if zero then replace it
-                {
-                    arrayA[nextElement] = difference.ElementAt(0); // fills the temporary array with the missing numbers
-                    sudoku[blokken[j][nextElement]].Getal = arrayA[nextElement]; // fills the flat array with the temporary array
-                }
-                nextElement++;
-            }
-        }
-    }
+             int nextElement = 0;
+             foreach (var g in arrayA) // looping through the array
+             {
+                 if (g == 0) // if zero then replace it
+                 {
+                     arrayA[nextElement] = difference.ElementAt(0); // fills the temporary array with the missing numbers
+                     sudoku[blokken[j][nextElement]].Getal = arrayA[nextElement]; // fills the flat array with the temporary array
+                 }
+                 nextElement++;
+             }
+         }
+     }
 
     public void Print()
     {
@@ -174,7 +173,7 @@ class Bord : ICloneable
             // Als de positie in de array deelbaar is door 9 dan zit het aan het begin van een nieuwe row
             if((i + 0) % 9 == 0) {
                 row = row + 1;
-                evaluaties.Add("r" + (row - 1), 9 - row_content.Count); // Zet het aantal missende getallen voor de desbetreffende row
+                evaluaties.Add("r" + (row - 1), 10 - row_content.Count); // Zet het aantal missende getallen voor de desbetreffende row
                 row_content = new HashSet<int>(); // Maak de hashset leeg voor de nieuwe row
             } 
 
@@ -188,7 +187,7 @@ class Bord : ICloneable
         // Loop door alle hashsets van de columns heen
         for (int j = 0; j < cols.Length; j++)
         {
-            evaluaties.Add("c"+ j ,9 - cols[j].Count); // Zet het aantal missende getallen voor de desbetreffende column
+            evaluaties.Add("c"+ j ,10 - cols[j].Count); // Zet het aantal missende getallen voor de desbetreffende column
         }
 
         // Loop door alle rows en columns met bijbehorende aantal missende getallen en tel deze bij elkaar op.
@@ -199,7 +198,7 @@ class Bord : ICloneable
             evaluatie_waarde += row_eval.Value;
         }
         
-        // Console.WriteLine("Evaluatie waarde: " + evaluatie_waarde);
+        Console.WriteLine("Evaluatie waarde: " + evaluatie_waarde);
         this.evaluatie_waarden = evaluaties;
 
 
@@ -243,10 +242,10 @@ class Bord : ICloneable
         }
 
         // Herberekend het aantal missende getallen.
-        this.evaluatie_waarden["c" + start_c_1] = 9 - col_1_content.Count;
-        this.evaluatie_waarden["r" + start_r_1] = 9 - row_1_content.Count;
-        this.evaluatie_waarden["c" + start_c_2] = 9 - col_2_content.Count;
-        this.evaluatie_waarden["r" + start_r_2] = 9 - row_2_content.Count;
+        this.evaluatie_waarden["c" + start_c_1] = 10 - col_1_content.Count;
+        this.evaluatie_waarden["r" + start_r_1] = 10 - row_1_content.Count;
+        this.evaluatie_waarden["c" + start_c_2] = 10 - col_2_content.Count;
+        this.evaluatie_waarden["r" + start_r_2] = 10 - row_2_content.Count;
 
         // Herbereken de totale evaluatiewaarde
         int updated_evaluatie_waarde = 0;
