@@ -1,7 +1,7 @@
 class Node
 {
     private bool verplaatsbaar;
-    private int getal;
+    private int getal;  
     private int row;
     private int column;
     public Node()

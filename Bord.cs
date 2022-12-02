@@ -27,10 +27,14 @@ class Bord : ICloneable
         int end = this.GetFlatPosition(start);
         Console.WriteLine(end);
 
-        updateBlokken();
-        Print();
-        fillSudoku();
+        this.updateBlokken();
         this.Print();
+        this.fillSudoku();
+        Console.WriteLine("filled sudoku");
+        this.Print();
+
+        // Console.WriteLine("test update");
+        // this.UpdateEvaluatie(new Coordinate(8, 8), new Coordinate(7, 7));
 
        // int[] test_sdk = new int[81];
        // for (int i = 0; i < 81; i++)
@@ -49,7 +53,7 @@ class Bord : ICloneable
 
     }
     //TODO
-    public void updateBlokken(bool alleenSwappebleGetallen = true)
+    public void updateBlokken(bool alleenSwappebleGetallen = false)
     {
         this.blokken = new List<List<int>>();
         int aantalRijen = (int)Math.Sqrt(this.sudoku.Length);
@@ -62,14 +66,15 @@ class Bord : ICloneable
         
         for (int i = 0; i < this.sudoku.Length; i++)
         {
-            nummerBlok = (this.sudoku[i].Row / 3) * 3 + (this.sudoku[i].Column-1) / 3;
+
+            nummerBlok = (int)((this.sudoku[i].Row / 3) * 3) + (int)((this.sudoku[i].Column) / 3);
+            // Console.WriteLine("i: " + i + "; nummerblok: " + nummerBlok + "; first: " + (int)((this.sudoku[i].Row / 3) * 3) + "; second: " + (int)((this.sudoku[i].Column) / 3));
             if (alleenSwappebleGetallen) {
                 if (this.sudoku[i].Verplaatsbaar) {
                     this.blokken[nummerBlok].Add(i);
                 }
-                else {
-                    this.blokken[nummerBlok].Add(i);
-                }
+            } else {
+                this.blokken[nummerBlok].Add(i);
             }
         }
     }
@@ -77,14 +82,13 @@ class Bord : ICloneable
     public void fillSudoku() // function for filling the sudoku with random numbers
      {
          int numberOfRows = (int)Math.Sqrt(this.sudoku.Length);
-         Console.WriteLine("huts:" + numberOfRows);
          int[] arrayA = new int[9];
          int[] arrayB = new int[9] {1,2,3,4,5,6,7,8,9};
 
          for (int j = 0; j < numberOfRows; j++)
          {
              for (int i = 0; i < numberOfRows; i++) {
-                Console.WriteLine("niet kaas: " + blokken[j][i]);
+                // Console.WriteLine("niet kaas: " + blokken[j][i]);
                 arrayA[i] = sudoku[blokken[j][i]].Getal; // fill a temporary array with the values of a block
              }
 
@@ -133,7 +137,7 @@ class Bord : ICloneable
             vakje.Verplaatsbaar = (sudoku_array[i] == 0);
             vakje.Getal = sudoku_array[i];
             
-            Coordinate positie = GetCoordinate(i + 1);
+            Coordinate positie = GetCoordinate(i);
             vakje.Row = positie.Y;
             vakje.Column = positie.X;
 
@@ -173,7 +177,7 @@ class Bord : ICloneable
             // Als de positie in de array deelbaar is door 9 dan zit het aan het begin van een nieuwe row
             if((i + 0) % 9 == 0) {
                 row = row + 1;
-                evaluaties.Add("r" + (row - 1), 10 - row_content.Count); // Zet het aantal missende getallen voor de desbetreffende row
+                evaluaties.Add("r" + (row - 1), 9 - row_content.Count); // Zet het aantal missende getallen voor de desbetreffende row
                 row_content = new HashSet<int>(); // Maak de hashset leeg voor de nieuwe row
             } 
 
@@ -187,7 +191,7 @@ class Bord : ICloneable
         // Loop door alle hashsets van de columns heen
         for (int j = 0; j < cols.Length; j++)
         {
-            evaluaties.Add("c"+ j ,10 - cols[j].Count); // Zet het aantal missende getallen voor de desbetreffende column
+            evaluaties.Add("c"+ j ,9 - cols[j].Count); // Zet het aantal missende getallen voor de desbetreffende column
         }
 
         // Loop door alle rows en columns met bijbehorende aantal missende getallen en tel deze bij elkaar op.
@@ -209,10 +213,14 @@ class Bord : ICloneable
     // de verandere rows en columns herberekend worden.
     public int UpdateEvaluatie(Coordinate swap_1, Coordinate swap_2) {
         // Initialise de start stap waarden voor beide rows en columns
+        // Console.WriteLine(swap_1 + " : " + swap_2);
+        
         int start_c_1 = swap_1.X;
         int start_r_1 = swap_1.Y;
         int start_c_2 = swap_2.X;
         int start_r_2 = swap_2.Y;
+
+        // Console.WriteLine("start c1: " + start_c_1 + "; r1: " + start_r_1 + "; c2: " + start_c_2 + "; r2: " + start_r_2);
 
         int column_1;
         int row_1;
@@ -235,6 +243,8 @@ class Bord : ICloneable
             row_2 = (start_r_2 * 9) + i;
 
             // Voeg het getal van de betreffende vakjes toe aan de betreffende row of column hashset
+            // Console.WriteLine("\t c1: " + column_1 + "; r1: " + row_1 + "; c2: " + column_2 + "; r2: " + row_2);
+            
             col_1_content.Add(this.sudoku[column_1].Getal);
             row_1_content.Add(this.sudoku[row_1].Getal);
             col_2_content.Add(this.sudoku[column_2].Getal);
@@ -242,10 +252,10 @@ class Bord : ICloneable
         }
 
         // Herberekend het aantal missende getallen.
-        this.evaluatie_waarden["c" + start_c_1] = 10 - col_1_content.Count;
-        this.evaluatie_waarden["r" + start_r_1] = 10 - row_1_content.Count;
-        this.evaluatie_waarden["c" + start_c_2] = 10 - col_2_content.Count;
-        this.evaluatie_waarden["r" + start_r_2] = 10 - row_2_content.Count;
+        this.evaluatie_waarden["c" + start_c_1] = 9 - col_1_content.Count;
+        this.evaluatie_waarden["r" + start_r_1] = 9 - row_1_content.Count;
+        this.evaluatie_waarden["c" + start_c_2] = 9 - col_2_content.Count;
+        this.evaluatie_waarden["r" + start_r_2] = 9 - row_2_content.Count;
 
         // Herbereken de totale evaluatiewaarde
         int updated_evaluatie_waarde = 0;
@@ -266,7 +276,7 @@ class Bord : ICloneable
     public Coordinate GetCoordinate(int flat_position) {
         int x = 0;
         int y = 0;
-        y = (flat_position - 1) / 9;
+        y = (int)Math.Floor(flat_position / 9.0);
         x = flat_position - (y * 9);
         return new Coordinate(x, y);
     }
