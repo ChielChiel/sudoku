@@ -41,7 +41,7 @@ class Bord {
 
 
 
-        // foreach(Node sd in this.sudoku) {
+        // foreach(Node sd in test_sudoku) {
         //     Console.Write("(" + "[" + sd.Row + ";" + sd.Column + "] "  + sd.Getal + " " + sd.Verplaatsbaar + "),");
         // }
 
@@ -165,7 +165,7 @@ class Bord {
             // Als de positie in de array deelbaar is door 9 dan zit het aan het begin van een nieuwe row
             if((i + 0) % 9 == 0) {
                 row = row + 1;
-                evaluaties.Add("r" + (row - 1), 9 - row_content.Count); // Zet het aantal missende getallen voor de desbetreffende row
+                evaluaties.Add("r" + (row - 1), 10 - row_content.Count); // Zet het aantal missende getallen voor de desbetreffende row
                 row_content = new HashSet<int>(); // Maak de hashset leeg voor de nieuwe row
             } 
 
@@ -179,7 +179,7 @@ class Bord {
         // Loop door alle hashsets van de columns heen
         for (int j = 0; j < cols.Length; j++)
         {
-            evaluaties.Add("c"+ j ,9 - cols[j].Count); // Zet het aantal missende getallen voor de desbetreffende column
+            evaluaties.Add("c"+ j ,10 - cols[j].Count); // Zet het aantal missende getallen voor de desbetreffende column
         }
 
         // Loop door alle rows en columns met bijbehorende aantal missende getallen en tel deze bij elkaar op.
@@ -190,7 +190,7 @@ class Bord {
             evaluatie_waarde += row_eval.Value;
         }
         
-        // Console.WriteLine("Evaluatie waarde: " + evaluatie_waarde);
+        Console.WriteLine("Evaluatie waarde: " + evaluatie_waarde);
         this.evaluatie_waarden = evaluaties;
 
 
@@ -234,10 +234,10 @@ class Bord {
         }
 
         // Herberekend het aantal missende getallen.
-        this.evaluatie_waarden["c" + start_c_1] = 9 - col_1_content.Count;
-        this.evaluatie_waarden["r" + start_r_1] = 9 - row_1_content.Count;
-        this.evaluatie_waarden["c" + start_c_2] = 9 - col_2_content.Count;
-        this.evaluatie_waarden["r" + start_r_2] = 9 - row_2_content.Count;
+        this.evaluatie_waarden["c" + start_c_1] = 10 - col_1_content.Count;
+        this.evaluatie_waarden["r" + start_r_1] = 10 - row_1_content.Count;
+        this.evaluatie_waarden["c" + start_c_2] = 10 - col_2_content.Count;
+        this.evaluatie_waarden["r" + start_r_2] = 10 - row_2_content.Count;
 
         // Herbereken de totale evaluatiewaarde
         int updated_evaluatie_waarde = 0;
