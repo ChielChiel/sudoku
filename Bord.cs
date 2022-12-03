@@ -264,6 +264,9 @@ class Bord : ICloneable
             updated_evaluatie_waarde += row_eval.Value;
         }
 
+        // Set the evaluatie of this object to the new evaluatie waarde. 
+        // Else the comparison in Solver.HillClimb won't work
+        this.evaluatie = updated_evaluatie_waarde;
         return updated_evaluatie_waarde;
     }
 

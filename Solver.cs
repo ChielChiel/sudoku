@@ -4,8 +4,6 @@ using System.Diagnostics;
 
 
 class Solver {
-    
-
 
     public Solver(Bord initial) {
         initial.CalculateEvaluatie();
@@ -19,7 +17,8 @@ class Solver {
 
         TimeSpan diff = stopWatch.Elapsed;
         Console.WriteLine("This problem took: " + diff.TotalSeconds);
-
+        Console.WriteLine("The final state, with evaluation value " + result.evaluatie + " being: ");
+        result.Print();
     }
 
 
@@ -28,11 +27,11 @@ class Solver {
         int steps = 0;
         bool stop_criterea = false;
 
+        bool alleenSwappebleGetallen = true;
+        problem.updateBlokken(alleenSwappebleGetallen);
         Bord current = problem;
         Bord neighbour;
         Bord rnd_walk_temp;
-        bool alleenSwappebleGetallen = false;
-        problem.updateBlokken(alleenSwappebleGetallen);
         while (!stop_criterea)
         {
             steps += 1;
@@ -92,21 +91,25 @@ class Solver {
         List<int> blok = problem.blokken[bloknummer];
         List<int[]> result = new List<int[]>();
 
-        // foreach (int i in blok)
-        //     Console.WriteLine(i);
-        
-        for (int i = 0; i < blok.Count - 1; i++)
+
+        // BETER OM HIERMEE ER DOORHEEN TE LOPEN @Kars
+        // https://stackoverflow.com/questions/18863047/c-sharp-iterate-over-all-possible-pairwise-combinations-of-array-contents
+
+        for (int i = 0; i < blok.Count; i++)
         {
-            for (int j = 0 + 1; j < blok.Count; j++)
+            for (int j = i + 1; j < blok.Count; j++)
             {
-                (problem.sudoku[blok[i]], problem.sudoku[blok[j]]) = (problem.sudoku[blok[j]], problem.sudoku[blok[i]]);
+                // Take a copy of the original problem, change that.
+                Bord tempbord = (Bord)problem.Clone();
+                (tempbord.sudoku[blok[i]], tempbord.sudoku[blok[j]]) = (tempbord.sudoku[blok[j]], tempbord.sudoku[blok[i]]);
                 // Console.WriteLine("blok i: " + blok[i] + "; blok j: " + blok[j]);
                 
-                Coordinate a = problem.GetCoordinate(blok[i]);
-                Coordinate b = problem.GetCoordinate(blok[j]);
+                Coordinate a = tempbord.GetCoordinate(blok[i]);
+                Coordinate b = tempbord.GetCoordinate(blok[j]);
                 //Wat moet ik hier aan UpdateEvaluatie() meegeven? De coordinaten van de geswapte dingen?
-                  if (problem.UpdateEvaluatie(a,b) < beste_tot_nu_toe.evaluatie)
-                       beste_tot_nu_toe = problem;
+                if (tempbord.UpdateEvaluatie(a,b) < beste_tot_nu_toe.evaluatie) {
+                    beste_tot_nu_toe = tempbord;
+                }
             }
         }
        
