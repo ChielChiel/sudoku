@@ -12,7 +12,7 @@ class Solver {
         Stopwatch stopWatch = new Stopwatch();
         stopWatch.Start();
         // We will have to vary these parameters to see what works best to get the best result overall.
-        Bord result = this.HillClimb(problem: initial, plateau_length: 10, plateau_height: 3, random_walk_length: 5, max_steps: 1000);
+        Bord result = this.HillClimb(problem: initial, plateau_length: 50, plateau_height: 1, random_walk_length: 2, max_steps: 1000);
         stopWatch.Stop();
 
         TimeSpan diff = stopWatch.Elapsed;
@@ -31,35 +31,37 @@ class Solver {
         problem.updateBlokken(alleenSwappebleGetallen);
         Bord current = problem;
         Bord neighbour = problem;
-        Bord rnd_walk_temp;
         while (!stop_criterea)
         {
             steps += 1;
 
+            current = current.DeepClone();
+            neighbour = null;
             // Check if the algorithm is on a plateau
-            if(past_states.Count >= plateau_length && new HashSet<int>(past_states.Skip(past_states.Count - plateau_length).Take(plateau_length)).Count < plateau_height) {
+            if(past_states.Count >= plateau_length && new HashSet<int>(past_states.Skip(past_states.Count - plateau_length).Take(plateau_length)).Count <= plateau_height) {
                 // In the past `plateau_length` states there are only circulating less than `plateau_height` 
                 // different numbers, so it is on a plateau
 
                 Console.WriteLine("----Random Walk----");
                 current = this.RandomSwap(current, random_walk_length);
+                past_states.Add(current.evaluatie);
                 
             }
             else { // Not on a plateau
                 neighbour = this.Swap(current);
+                 // Compare evaluation values
+                if(neighbour.evaluatie <= current.evaluatie) {
+                    current = neighbour;
+                    past_states.Add(current.evaluatie);
+                }
             }
 
-            // Compare evaluation values
-            if(neighbour.evaluatie <= current.evaluatie) {
-
-            current = neighbour;
-            past_states.Add(current.evaluatie);
-            }
+           
             Console.WriteLine("Iteration: " + steps + "; Evaluatie: " + current.evaluatie);
 
 
             // Determine if stop criterea is met
-            if(steps == max_steps || current.evaluatie == 0) {
+            if(current.evaluatie <= 10) {
                 stop_criterea = true;
             }
         }
@@ -69,37 +71,32 @@ class Solver {
     }
 
 
-    private Bord Swap(Bord problem, bool random_walk = false) {
+    private Bord Swap(Bord problem) {
 
-        Bord beste_tot_nu_toe = (Bord)problem.Clone();
+        Bord beste_tot_nu_toe = problem.DeepClone();
         // bijhouden beste_tot_nu_toe
         // voordat swap, copy sudoku maken
         // dan swappen
         // bord.UpdateEvaluatie() aanroepen
         // dan chekcen of beter dan beste_tot_nu_toe
         // na alle swaps, beste_tot_nu_toe returnen
-        if(random_walk) {
-            // Just swap, dont look at evaluation values.
-
-            // return random_swap;
-        }
 
 
         Random rnd = new Random();
-        int bloknummer = rnd.Next(0, problem.blokken.Count- 1);
+        int bloknummer = rnd.Next(0, problem.blokken.Count);
         List<int> blok = problem.blokken[bloknummer];
         List<int[]> result = new List<int[]>();
 
-
-        // BETER OM HIERMEE ER DOORHEEN TE LOPEN @Kars
-        // https://stackoverflow.com/questions/18863047/c-sharp-iterate-over-all-possible-pairwise-combinations-of-array-contents
-
+        // Save the initial problem in a separate variable
+        Bord init = problem.DeepClone();
+        
         for (int i = 0; i < blok.Count; i++)
         {
             for (int j = i + 1; j < blok.Count; j++)
             {
-                // Take a copy of the original problem, change that.
-                Bord tempbord = (Bord)problem.Clone();
+                // Take a deepclone of the original problem, change that.
+                Bord tempbord = init.DeepClone();
+
                 (tempbord.sudoku[blok[i]], tempbord.sudoku[blok[j]]) = (tempbord.sudoku[blok[j]], tempbord.sudoku[blok[i]]);
                 // Console.WriteLine("blok i: " + blok[i] + "; blok j: " + blok[j]);
                 
@@ -112,31 +109,20 @@ class Solver {
             }
         }
        
-        // Swap() | @We zien wel.
-
-
-        //  try swaps
-        // new_sudoku.update(swap_from, swap_to);
-        //  Update evaluatiefunctie
-        // return swaps
-
-        //(swapped.sudoku[blok[first]], swapped.sudoku[blok[second]]) = (swapped.sudoku[blok[second]], swapped.sudoku[blok[first]]);
-
-        // swapped.UpdateEvaluatie()
         return beste_tot_nu_toe;
     }
 
     private Bord RandomSwap(Bord problem, int random_walk_length)
     {
         Random rnd = new Random();
-        int bloknummer = rnd.Next(0, problem.blokken.Count - 1);
+        int bloknummer = rnd.Next(0, problem.blokken.Count);
         int Cijfer1;
         int Cijfer2;
         List<int> blok = problem.blokken[bloknummer];
         for (int i = 0; i < random_walk_length; i++)
         {
-            Cijfer1 = rnd.Next(0, problem.blokken[bloknummer].Count - 1);
-            Cijfer2 = rnd.Next(0, problem.blokken[bloknummer].Count - 1);
+            Cijfer1 = rnd.Next(0, problem.blokken[bloknummer].Count);
+            Cijfer2 = rnd.Next(0, problem.blokken[bloknummer].Count);
             (problem.sudoku[blok[Cijfer1]], problem.sudoku[blok[Cijfer2]]) = (problem.sudoku[blok[Cijfer2]], problem.sudoku[blok[Cijfer1]]);
 
             Coordinate a = problem.GetCoordinate(blok[Cijfer1]);
@@ -147,19 +133,5 @@ class Solver {
 
         return problem;
     }
-    private int[] GetBlok(bool returnAll = false)
-    {
-        //hier moet eigenlijk een array komen van elk blok met de indexen van getallen die geswapt kunnen worden
-        int[] blok = new int[] { 0, 1, 2, 9, 10, 11, 18, 19, 20 };
-        
-        
-        // Node node.Verplaatsbaar == true
-        return blok;
-    }
-
-
-    //Class bord:
-    // Invullen van sudoku met ranodom getallen. | @ardjuhh
-
 
 }

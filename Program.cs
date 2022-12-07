@@ -19,6 +19,7 @@ sudoku = ReadFromFile.ReadTXT(@"Sudoku_puzzels_5.txt");
 
 
 Bord testbord = new Bord(sudoku.GetRow(0));
+
 new Solver(testbord);
 
 

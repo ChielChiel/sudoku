@@ -12,6 +12,31 @@ class Bord : ICloneable
     {
         return this.MemberwiseClone();
     }
+
+    public Bord DeepClone() {
+        Node[] sdk = new Node[81];
+        for (int i = 0; i < this.sudoku.Length; i++)
+        {
+            sdk[i] = this.sudoku[i];
+        }
+        
+        Bord clone = new Bord(sudoku_: sdk, evaluatie_waarden_: this.evaluatie_waarden, evaluatie_: evaluatie, blokken_: this.blokken);
+        // clone.evaluatie = clone.CalculateEvaluatie();
+        // clone.updateBlokken();
+
+        return clone;
+    }
+
+    public Bord(Node[] sudoku_, Dictionary<string, int> evaluatie_waarden_, int evaluatie_, List<List<int>> blokken_) {
+        // Console.WriteLine("deeply clond");
+        this.sudoku = sudoku_;
+        this.evaluatie_waarden = evaluatie_waarden_;
+        this.evaluatie = evaluatie_;
+        this.blokken = blokken_;
+        // this.updateBlokken();
+    }
+
+
     public Bord(int[] sudoku_array) {
         this.sudoku = this.Create_Board(sudoku_array);
 
@@ -27,8 +52,9 @@ class Bord : ICloneable
         int end = this.GetFlatPosition(start);
         Console.WriteLine(end);
 
-        this.updateBlokken();
+        this.updateBlokken(alleenSwappebleGetallen: false);
         this.Print();
+        // Console.WriteLine("filling sudoku");
         this.fillSudoku();
         Console.WriteLine("filled sudoku");
         this.Print();
@@ -84,6 +110,8 @@ class Bord : ICloneable
          int numberOfRows = (int)Math.Sqrt(this.sudoku.Length);
          int[] arrayA = new int[9];
          int[] arrayB = new int[9] {1,2,3,4,5,6,7,8,9};
+
+        // Console.WriteLine(numberOfRows);
 
          for (int j = 0; j < numberOfRows; j++)
          {
@@ -204,7 +232,7 @@ class Bord : ICloneable
         
         Console.WriteLine("Evaluatie waarde: " + evaluatie_waarde);
         this.evaluatie_waarden = evaluaties;
-
+        this.evaluatie = evaluatie_waarde;
 
         return evaluatie_waarde;
     }
