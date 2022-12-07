@@ -12,7 +12,7 @@ class Solver {
         Stopwatch stopWatch = new Stopwatch();
         stopWatch.Start();
         // We will have to vary these parameters to see what works best to get the best result overall.
-        Bord result = this.HillClimb(problem: initial, plateau_length: 10, plateau_height: 3, random_walk_length: 5, max_steps: 100);
+        Bord result = this.HillClimb(problem: initial, plateau_length: 10, plateau_height: 3, random_walk_length: 5, max_steps: 1000);
         stopWatch.Stop();
 
         TimeSpan diff = stopWatch.Elapsed;
@@ -30,7 +30,7 @@ class Solver {
         bool alleenSwappebleGetallen = true;
         problem.updateBlokken(alleenSwappebleGetallen);
         Bord current = problem;
-        Bord neighbour;
+        Bord neighbour = problem;
         Bord rnd_walk_temp;
         while (!stop_criterea)
         {
@@ -40,12 +40,10 @@ class Solver {
             if(past_states.Count >= plateau_length && new HashSet<int>(past_states.Skip(past_states.Count - plateau_length).Take(plateau_length)).Count < plateau_height) {
                 // In the past `plateau_length` states there are only circulating less than `plateau_height` 
                 // different numbers, so it is on a plateau
-                rnd_walk_temp = current;
-                for (int s = 0; s < random_walk_length; s++) // Take s random steps
-                {
-                    this.Swap(problem: rnd_walk_temp, random_walk: true);
-                }
-                neighbour = rnd_walk_temp;
+
+                Console.WriteLine("----Random Walk----");
+                current = this.RandomSwap(current, random_walk_length);
+                
             }
             else { // Not on a plateau
                 neighbour = this.Swap(current);
@@ -53,8 +51,9 @@ class Solver {
 
             // Compare evaluation values
             if(neighbour.evaluatie <= current.evaluatie) {
-                current = neighbour;
-                past_states.Add(current.evaluatie);
+
+            current = neighbour;
+            past_states.Add(current.evaluatie);
             }
             Console.WriteLine("Iteration: " + steps + "; Evaluatie: " + current.evaluatie);
 
@@ -127,6 +126,27 @@ class Solver {
         return beste_tot_nu_toe;
     }
 
+    private Bord RandomSwap(Bord problem, int random_walk_length)
+    {
+        Random rnd = new Random();
+        int bloknummer = rnd.Next(0, problem.blokken.Count - 1);
+        int Cijfer1;
+        int Cijfer2;
+        List<int> blok = problem.blokken[bloknummer];
+        for (int i = 0; i < random_walk_length; i++)
+        {
+            Cijfer1 = rnd.Next(0, problem.blokken[bloknummer].Count - 1);
+            Cijfer2 = rnd.Next(0, problem.blokken[bloknummer].Count - 1);
+            (problem.sudoku[blok[Cijfer1]], problem.sudoku[blok[Cijfer2]]) = (problem.sudoku[blok[Cijfer2]], problem.sudoku[blok[Cijfer1]]);
+
+            Coordinate a = problem.GetCoordinate(blok[Cijfer1]);
+            Coordinate b = problem.GetCoordinate(blok[Cijfer2]);
+            problem.UpdateEvaluatie(a, b);
+        }
+       
+
+        return problem;
+    }
     private int[] GetBlok(bool returnAll = false)
     {
         //hier moet eigenlijk een array komen van elk blok met de indexen van getallen die geswapt kunnen worden
