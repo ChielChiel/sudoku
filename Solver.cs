@@ -16,7 +16,7 @@ class Solver {
         stopWatch.Stop();
 
         TimeSpan diff = stopWatch.Elapsed;
-        Console.WriteLine("This problem took: " + diff.TotalSeconds);
+        Console.WriteLine("This problem took: " + diff.TotalSeconds + " seconds to complete");
         Console.WriteLine("The final state, with evaluation value " + result.evaluatie + " being: ");
         result.Print();
     }
@@ -34,6 +34,7 @@ class Solver {
         while (!stop_criterea)
         {
             steps += 1;
+            // Determine if stop criterea is met
 
             current = current.DeepClone();
             neighbour = null;
@@ -42,8 +43,8 @@ class Solver {
                 // In the past `plateau_length` states there are only circulating less than `plateau_height` 
                 // different numbers, so it is on a plateau
 
-                Console.WriteLine("----Random Walk----");
-                current = this.RandomSwap(current, random_walk_length);
+                // Console.WriteLine("----Random Walk----");
+                current = this.RandomSwap(current.DeepClone(), random_walk_length);
                 past_states.Add(current.evaluatie);
                 
             }
@@ -57,13 +58,13 @@ class Solver {
             }
 
            
-            Console.WriteLine("Iteration: " + steps + "; Evaluatie: " + current.evaluatie);
-
-
-            // Determine if stop criterea is met
-            if(current.evaluatie <= 10) {
+            // Console.WriteLine("Iteration: " + steps + "; Evaluatie: " + current.evaluatie);
+             if(current.evaluatie == 0) {
                 stop_criterea = true;
+                return current;
             }
+
+            
         }
 
         // After hillclimb is finished, return the state which it ended with.
@@ -106,6 +107,9 @@ class Solver {
                 if (tempbord.UpdateEvaluatie(a,b) < beste_tot_nu_toe.evaluatie) {
                     beste_tot_nu_toe = tempbord;
                 }
+                // if (tempbord.CalculateEvaluatie() < beste_tot_nu_toe.evaluatie) {
+                //     beste_tot_nu_toe = tempbord;
+                // }
             }
         }
        
@@ -128,6 +132,7 @@ class Solver {
             Coordinate a = problem.GetCoordinate(blok[Cijfer1]);
             Coordinate b = problem.GetCoordinate(blok[Cijfer2]);
             problem.UpdateEvaluatie(a, b);
+            // problem.CalculateEvaluatie();
         }
        
 

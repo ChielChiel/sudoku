@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 // See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+Console.WriteLine("Hello, \x1b[1mWorld!\x1b[0m");
 
 // 5 and 81 can be defined globally
 int[,] sudoku = new int[5,81];
