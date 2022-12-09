@@ -1,31 +1,28 @@
 using System.Collections.Generic;
 using System.Globalization;
 
-class Bord : ICloneable
+class Board 
 {
 
     public Node[] sudoku;
     public Dictionary<string, int> evaluatie_waarden;
-    public int evaluatie;
-    public List<List<int>> blokken;
-    public object Clone()
-    {
-        return this.MemberwiseClone();
-    }
+    public int Evaluation;
+    public List<List<int>> blocks;
 
-    public Bord DeepClone() {
+    //DeepClone creates an exact copy of the Board
+    public Board DeepClone() {
         Node[] sdk = new Node[81];
         for (int i = 0; i < this.sudoku.Length; i++)
         {
             sdk[i] = this.sudoku[i];
         }
         
-        Bord clone = new Bord(sudoku_: sdk, evaluatie_waarden_: this.evaluatie_waarden, evaluatie_: evaluatie, blokken_: this.blokken);
+        Board clone = new Board(sudoku_: sdk, evaluatie_waarden_: this.evaluatie_waarden, evaluatie_: Evaluation, blokken_: this.blocks);
         return clone;
     }
 
     // Used for deepcloning the object
-    public Bord(Node[] sudoku_, Dictionary<string, int> evaluatie_waarden_, int evaluatie_, List<List<int>> blokken_) {
+    public Board(Node[] sudoku_, Dictionary<string, int> evaluatie_waarden_, int evaluatie_, List<List<int>> blokken_) {
         this.sudoku = sudoku_;
         // Deep-clone (dc) the evaluation values dictionary
         Dictionary<string, int> dc_eval = new Dictionary<string, int>();
@@ -33,19 +30,15 @@ class Bord : ICloneable
             dc_eval.Add(row_eval.Key, row_eval.Value);
         }
         this.evaluatie_waarden = dc_eval;
-        this.evaluatie = evaluatie_;
-        this.blokken = blokken_;
+        this.Evaluation = evaluatie_;
+        this.blocks = blokken_;
     }
 
 
-    public Bord(int[] sudoku_array) {
+    public Board(int[] sudoku_array) {
         this.sudoku = this.Create_Board(sudoku_array);
 
-        this.evaluatie = this.CalculateEvaluatie();
-
-        // foreach(Node sd in this.sudoku) {
-        //     Console.Write("(" + "[" + sd.Row + ";" + sd.Column + "] "  + sd.Getal + " " + sd.Verplaatsbaar + "),");
-        // }
+        this.Evaluation = this.CalculateEvaluatie();
 
         // Test to show that GetCoordinate and GetFlatPosition are working.
         Coordinate start = this.GetCoordinate(80);
@@ -53,36 +46,35 @@ class Bord : ICloneable
         int end = this.GetFlatPosition(start);
         Console.WriteLine(end);
 
-        this.updateBlokken(alleenSwappebleGetallen: false);
-        this.Print();
-        // Console.WriteLine("filling sudoku");
+        this.UpdateBlocks(onlySwappableNumbers: false);
         this.fillSudoku();
-        Console.WriteLine("filled sudoku");
+        Console.WriteLine("filled start sudoku");
         this.Print();
     }
-    //TODO
-    public void updateBlokken(bool alleenSwappebleGetallen = false)
+ 
+    public void UpdateBlocks(bool onlySwappableNumbers = false)
     {
-        this.blokken = new List<List<int>>();
-        int aantalRijen = (int)Math.Sqrt(this.sudoku.Length);
+        this.blocks = new List<List<int>>();
+        int numberOfRows = (int)Math.Sqrt(this.sudoku.Length);
 
-        int nummerBlok = -1;
+        int blockNumber;
 
-        for (int i = 0; i < aantalRijen; i++) {
-            this.blokken.Add(new List<int>());
+        for (int i = 0; i < numberOfRows; i++) 
+        {
+            this.blocks.Add(new List<int>());
         }
         
         for (int i = 0; i < this.sudoku.Length; i++)
         {
 
-            nummerBlok = (int)((this.sudoku[i].Row / 3) * 3) + (int)((this.sudoku[i].Column) / 3);
+            blockNumber = (int)((this.sudoku[i].Row / 3) * 3) + (int)((this.sudoku[i].Column) / 3);
             // Console.WriteLine("i: " + i + "; nummerblok: " + nummerBlok + "; first: " + (int)((this.sudoku[i].Row / 3) * 3) + "; second: " + (int)((this.sudoku[i].Column) / 3));
-            if (alleenSwappebleGetallen) {
-                if (this.sudoku[i].Verplaatsbaar) {
-                    this.blokken[nummerBlok].Add(i);
+            if (onlySwappableNumbers) {
+                if (this.sudoku[i].Swappable) {
+                    this.blocks[blockNumber].Add(i);
                 }
             } else {
-                this.blokken[nummerBlok].Add(i);
+                this.blocks[blockNumber].Add(i);
             }
         }
     }
@@ -93,13 +85,11 @@ class Bord : ICloneable
          int[] arrayA = new int[9];
          int[] arrayB = new int[9] {1,2,3,4,5,6,7,8,9};
 
-        // Console.WriteLine(numberOfRows);
 
          for (int j = 0; j < numberOfRows; j++)
          {
              for (int i = 0; i < numberOfRows; i++) {
-                // Console.WriteLine("niet kaas: " + blokken[j][i]);
-                arrayA[i] = sudoku[blokken[j][i]].Getal; // fill a temporary array with the values of a block
+                arrayA[i] = sudoku[blocks[j][i]].Number; // fill a temporary array with the values of a block
              }
 
              IEnumerable<int> difference = arrayB.Except(arrayA); // Checks the difference between a given block and a full block
@@ -110,7 +100,7 @@ class Bord : ICloneable
                  if (g == 0) // if zero then replace it
                  {
                      arrayA[nextElement] = difference.ElementAt(0); // fills the temporary array with the missing numbers
-                     sudoku[blokken[j][nextElement]].Getal = arrayA[nextElement]; // fills the flat array with the temporary array
+                     sudoku[blocks[j][nextElement]].Number = arrayA[nextElement]; // fills the flat array with the temporary array
                  }
                  nextElement++;
              }
@@ -129,11 +119,11 @@ class Bord : ICloneable
                 if ((j + (i * aantalRijen)) % 3 == 0) {
                     Rij += "|";
                 }
-                if(sudoku[j+(i*aantalRijen)].Verplaatsbaar == false) {
+                if(sudoku[j+(i*aantalRijen)].Swappable == false) {
                     // "\x1b[36m" geeft de kleur blauw aan niet verplaatsbare getallen
-                    Rij += "\x1b[36m" + sudoku[j+(i*aantalRijen)].Getal.ToString() + "\x1b[0m ";
+                    Rij += "\x1b[36m" + sudoku[j+(i*aantalRijen)].Number.ToString() + "\x1b[0m ";
                 } else {
-                    Rij += sudoku[j+(i*aantalRijen)].Getal.ToString() + " ";
+                    Rij += sudoku[j+(i*aantalRijen)].Number.ToString() + " ";
                 }
                 
             }
@@ -151,8 +141,8 @@ class Bord : ICloneable
         for (int i = 0; i < sudoku_array.Length; i++)
         {
             Node vakje = new Node();
-            vakje.Verplaatsbaar = (sudoku_array[i] == 0);
-            vakje.Getal = sudoku_array[i];
+            vakje.Swappable = (sudoku_array[i] == 0);
+            vakje.Number = sudoku_array[i];
             
             Coordinate positie = GetCoordinate(i);
             vakje.Row = positie.Y;
@@ -187,7 +177,7 @@ class Bord : ICloneable
         for (int i = 1; i <= this.sudoku.Length; i++)
         {
             // Console.WriteLine("row: " + row + "; " + sudoku.sudoku[i - 1].Getal);
-            node_getal = this.sudoku[i - 1].Getal; // Pak het huidige vakje met getal
+            node_getal = this.sudoku[i - 1].Number; // Pak het huidige vakje met getal
             row_content.Add(node_getal); // Voeg het getal toe aan de hashset voor deze row.
             column = column + 1; // Verplaats de column pointer 1 naar rechts
 
@@ -221,14 +211,14 @@ class Bord : ICloneable
         
         // Console.WriteLine("Evaluatie waarde: " + evaluatie_waarde);
         this.evaluatie_waarden = evaluaties;
-        this.evaluatie = evaluatie_waarde;
+        this.Evaluation = evaluatie_waarde;
 
         return evaluatie_waarde;
     }
 
     // In plaats van voor een veranderde sudoku alle evaluaties opnieuw te berekenen, kunnen ook alleen de desbetreffende evaluaties voor
     // de verandere rows en columns herberekend worden.
-    public int UpdateEvaluatie(Coordinate swap_1, Coordinate swap_2, bool verbose = false) {
+    public int UpdateEvaluation(Coordinate swap_1, Coordinate swap_2, bool verbose = false) {
         // Initialise de start stap waarden voor beide rows en columns
         // Console.WriteLine(swap_1 + " : " + swap_2);
         
@@ -260,10 +250,10 @@ class Bord : ICloneable
             row_2 = (start_r_2 * 9) + i;
 
             // Voeg het getal van de betreffende vakjes toe aan de betreffende row of column hashset
-            col_1_content.Add(this.sudoku[column_1].Getal);
-            row_1_content.Add(this.sudoku[row_1].Getal);
-            col_2_content.Add(this.sudoku[column_2].Getal);
-            row_2_content.Add(this.sudoku[row_2].Getal);
+            col_1_content.Add(this.sudoku[column_1].Number);
+            row_1_content.Add(this.sudoku[row_1].Number);
+            col_2_content.Add(this.sudoku[column_2].Number);
+            row_2_content.Add(this.sudoku[row_2].Number);
 
             if(verbose) {
                 Console.WriteLine("\t c1: " + column_1 + "; r1: " + row_1 + "; c2: " + column_2 + "; r2: " + row_2);
@@ -302,7 +292,7 @@ class Bord : ICloneable
 
         // Set the evaluatie of this object to the new evaluatie waarde. 
         // Else the comparison in Solver.HillClimb won't work
-        this.evaluatie = updated_evaluatie_waarde;
+        this.Evaluation = updated_evaluatie_waarde;
         return updated_evaluatie_waarde;
     }
 
