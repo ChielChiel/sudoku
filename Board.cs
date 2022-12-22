@@ -40,16 +40,10 @@ class Board
 
         this.Evaluation = this.CalculateEvaluatie();
 
-        // Test to show that GetCoordinate and GetFlatPosition are working.
-        Coordinate start = this.GetCoordinate(80);
-        Console.WriteLine(start);
-        int end = this.GetFlatPosition(start);
-        Console.WriteLine(end);
-
         this.UpdateBlocks(onlySwappableNumbers: false);
         this.fillSudoku();
-        Console.WriteLine("filled start sudoku");
-        this.Print();
+        // Console.WriteLine("Filled start sudoku.");
+        // this.Print();
     }
 
     //returns from the flat array arrays with the indexes, sorted in blocks. FI: the numbers  [0, 1, 2, 9, 10, 11, 18, 19, 20] are in block 0
