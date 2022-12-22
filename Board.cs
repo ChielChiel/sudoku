@@ -37,13 +37,10 @@ class Board
 
     public Board(int[] sudoku_array) {
         this.sudoku = this.Create_Board(sudoku_array);
-
         this.Evaluation = this.CalculateEvaluatie();
 
         this.UpdateBlocks(onlySwappableNumbers: false);
         this.fillSudoku();
-        // Console.WriteLine("Filled start sudoku.");
-        // this.Print();
     }
 
     //returns from the flat array arrays with the indexes, sorted in blocks. FI: the numbers  [0, 1, 2, 9, 10, 11, 18, 19, 20] are in block 0
@@ -102,6 +99,8 @@ class Board
          }
      }
 
+    // Method used for pretty printing the sudoku array as a proper 9x9 sudoku. Blue color is used to indicate that
+    //Nodes that are unswappable.
     public void Print()
     {
         string row;
@@ -134,6 +133,7 @@ class Board
 
         for (int i = 0; i < sudoku_array.Length; i++)
         {
+            // Add meta information about a number in the sudoku.
             Node number = new Node();
             number.Swappable = (sudoku_array[i] == 0);
             number.Number = sudoku_array[i];
@@ -150,7 +150,7 @@ class Board
 
     //determines the evaluation value
     public int CalculateEvaluatie() {
-        Dictionary<string, int> evaluations =  new Dictionary<string, int>(); // Dictionary bevat de evaluatiewaarden voor elke row en column.
+        Dictionary<string, int> evaluations =  new Dictionary<string, int>(); // Dictionary containing the evaluation values for each row and column
         
         int row = 0; // current row
         int column = -1; //current column
@@ -166,35 +166,34 @@ class Board
             cols[j] = new HashSet<int>();
         }
 
-        // Loop door de hele sudoku heen
+        // Loop through the entire sudoku
         for (int i = 1; i <= this.sudoku.Length; i++)
         {
-            nodeNumber = this.sudoku[i - 1].Number; // Pak het huidige vakje met getal
-            rowContent.Add(nodeNumber); // Voeg het getal toe aan de hashset voor deze row.
-            column = column + 1; // Verplaats de column pointer 1 naar rechts
+            nodeNumber = this.sudoku[i - 1].Number; // Get an element from the sudoku array. Starting in the top left
+            rowContent.Add(nodeNumber); // Add the number to the hashset for this row
+            column = column + 1; // Move the column pointer one to the right
 
-            // Als de positie in de array deelbaar is door 9 dan zit het aan het begin van een nieuwe row
+            // If the position in the array is divisible by 9, then it is at the beginning of a new row.
             if((i + 0) % 9 == 0) {
                 row = row + 1;
-                evaluations.Add("r" + (row - 1), 9 - rowContent.Count); // Zet het aantal missende getallen voor de desbetreffende row
-                rowContent = new HashSet<int>(); // Maak de hashset leeg voor de nieuwe row
+                evaluations.Add("r" + (row - 1), 9 - rowContent.Count); // Calculate how many unique values are missing from the specific row.
+                rowContent = new HashSet<int>(); // Empty the hashset for a new row.
             } 
 
-            // Als de vorige positie in de array deelbaar is door 9, dan zit het weer aan de eerste column
+            // If the last position in the array was divisible by 9, then it is at the beginning of a new column
             if((i - 1) % 9 == 0) { 
                 column = 0;
             }
             cols[column].Add(nodeNumber); 
         }
         
-        // loops through all hashsets
+        // Loops through all hashsets
         for (int j = 0; j < cols.Length; j++)
         {
-            evaluations.Add("c"+ j ,9 - cols[j].Count); // sets the amount of missing values
+            evaluations.Add("c"+ j ,9 - cols[j].Count); // Sets the amount of missing unique values
         }
 
-        //loops through the rows and columns with missing correct values and counts these
-
+        //Loops through the rows and columns with missing correct values and counts these
         int evaluationValue = 0;
         foreach(KeyValuePair<string, int> row_eval in evaluations) {
             evaluationValue += row_eval.Value;
@@ -243,6 +242,7 @@ class Board
             col2Content.Add(this.sudoku[column2].Number);
             row2Content.Add(this.sudoku[row2].Number);
 
+            // Write debugging values to the terminal if necessary
             if(verbose) {
                 Console.WriteLine("\t c1: " + column1 + "; r1: " + row1 + "; c2: " + column2 + "; r2: " + row2);
                 Console.WriteLine($"lengts: {column1Content.Count} {row1Content.Count} {col2Content.Count} {row2Content.Count}");
@@ -292,11 +292,6 @@ class Board
         x = flat_position - (y * 9);
         return new Coordinate(x, y);
     }
-
-    public int GetFlatPosition(Coordinate position) {
-        return 9 * position.Y + position.X;
-    }
-
 }
 
 // Helper class to project a coordinate in our sudoku
@@ -317,5 +312,4 @@ class Coordinate {
     {
         return "X = " + this.X + ", Y = " + this.Y;
     }
-
 }

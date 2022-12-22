@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 
 
@@ -13,7 +11,7 @@ class Solver {
         stopWatch.Start();
 
         // We will have to vary these parameters to see what works best to get the best result overall.
-        Board result = this.HillClimb(problem: initial, plateau_length: 20, plateau_height: 5, random_walk_length: 2, max_steps: 100000);
+        Board result = this.HillClimb(problem: initial, plateau_length: 10, plateau_height: 1, random_walk_length: 2, max_steps: 100000);
         stopWatch.Stop();
 
         TimeSpan diff = stopWatch.Elapsed;
@@ -24,7 +22,7 @@ class Solver {
     }
 
 
-    public Board HillClimb(Board problem, int plateau_length = 10, int plateau_height = 3, int random_walk_length = 5, int max_steps = 1000) {
+    public Board HillClimb(Board problem, int plateau_length = 10, int plateau_height = 1, int random_walk_length = 2, int max_steps = 100000) {
         List<int> past_states = new List<int>();
         int steps = 0;
         bool stop_criterea = false;
@@ -36,8 +34,6 @@ class Solver {
         while (!stop_criterea)
         {
             steps += 1;
-            // Determine if stop criterea is met
-
             current = current.DeepClone();
             neighbour = null;
             // Check if the algorithm is on a plateau
@@ -45,7 +41,6 @@ class Solver {
             {
                 // In the past `plateau_length` states there are only circulating less than `plateau_height` 
                 // different numbers, so it is on a plateau
-
                 current = this.RandomSwap(current.DeepClone(), random_walk_length);
                 past_states.Add(current.Evaluation);
                 
@@ -59,10 +54,9 @@ class Solver {
                     past_states.Add(current.Evaluation);
                 }
             }
-
-           
-            // Console.WriteLine("Iteration: " + steps + "; Evaluatie: " + current.evaluatie);
-             if(current.Evaluation == 0) {
+            
+            // Determine if stop criterea is met
+            if(current.Evaluation == 0 || steps == max_steps) {
                 stop_criterea = true;
                 return current;
             }
@@ -76,10 +70,7 @@ class Solver {
 
 
     private Board Swap(Board problem) {
-
         Board bestUntilNow = problem.DeepClone();
-    
-
 
         Random rnd = new Random();
         int bloknummer = rnd.Next(0, problem.blocks.Count);
@@ -130,8 +121,7 @@ class Solver {
             Coordinate b = problem.GetCoordinate(block[IndexNumber2]);
             problem.UpdateEvaluation(a, b);
 
-        }
-       
+        }       
 
         return problem;
     }
