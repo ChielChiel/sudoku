@@ -1,23 +1,23 @@
 class Node
 {
-    private bool verplaatsbaar;
-    private int getal;  
+    private bool swappable;
+    private int number;  
     private int row;
     private int column;
     public Node()
     { 
     }
 
-    public bool Verplaatsbaar
+    public bool Swappable
     {
-        get { return verplaatsbaar; }
-        set { verplaatsbaar = value; }
+        get { return swappable; }
+        set { swappable = value; }
     }
 
-    public int Getal
+    public int Number
     {
-        get { return getal; }
-        set { getal = value; }
+        get { return number; }
+        set { number = value; }
     }
 
     public int Row

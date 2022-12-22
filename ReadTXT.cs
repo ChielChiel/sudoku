@@ -1,15 +1,6 @@
 public class ReadFromFile
 {
 
-    // Inlezen
-    // Createbord(ingelezen)
-    // sudoku_temp.getblocks 
-    //  (9 blokken)
-    //      array (0,1,2,8,)
-    //      sudoku_array[0] = 3
-    // 3x3 units gaat vullen
-
-
     public static int[,] ReadTXT(System.String link)
     {
         // line to read file
