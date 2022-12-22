@@ -13,7 +13,7 @@ class Solver {
         stopWatch.Start();
 
         // We will have to vary these parameters to see what works best to get the best result overall.
-        Board result = this.HillClimb(problem: initial, plateau_length: 50, plateau_height: 1, random_walk_length: 2, max_steps: 1000);
+        Board result = this.HillClimb(problem: initial, plateau_length: 20, plateau_height: 5, random_walk_length: 2, max_steps: 100000);
         stopWatch.Stop();
 
         TimeSpan diff = stopWatch.Elapsed;
@@ -78,12 +78,7 @@ class Solver {
     private Board Swap(Board problem) {
 
         Board bestUntilNow = problem.DeepClone();
-        // bijhouden beste_tot_nu_toe
-        // voordat swap, copy sudoku maken
-        // dan swappen
-        // bord.UpdateEvaluatie() aanroepen
-        // dan chekcen of beter dan beste_tot_nu_toe
-        // na alle swaps, beste_tot_nu_toe returnen
+    
 
 
         Random rnd = new Random();
@@ -116,7 +111,8 @@ class Solver {
        
         return bestUntilNow;
     }
-
+    
+    //Selects a random block and swaps (random_walk_lenght) numbers
     private Board RandomSwap(Board problem, int random_walk_length)
     {
         Random rnd = new Random();

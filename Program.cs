@@ -6,19 +6,24 @@ Console.WriteLine("Hello, \x1b[1mWorld!\x1b[0m");
 
 // 5 and 81 can be defined globally
 int[,] sudoku = new int[5,81];
+int runs = 10;
 sudoku = ReadFromFile.ReadTXT(@"Sudoku_puzzels_5.txt");
-Board testBoard = new Board(sudoku.GetRow(2));
 
 
-int runs = 100;
-Stopwatch stopWatch = new Stopwatch();
-stopWatch.Start();
-for (int i = 0; i < runs; i++)
+for (int j = 0; j < 5; j++)
+{
+    Board testBoard = new Board(sudoku.GetRow(j));
     new Solver(testBoard);
-stopWatch.Stop();
-
-TimeSpan diff = stopWatch.Elapsed;
-Console.WriteLine("Average time:" + diff.TotalSeconds / runs);
+    Stopwatch stopWatch = new Stopwatch();
+    stopWatch.Start();
+    for (int i = 0; i < runs; i++)
+        new Solver(testBoard);
+    stopWatch.Stop();
+    TimeSpan diff = stopWatch.Elapsed;
+    Console.WriteLine("Average time:" + j);
+    Console.WriteLine(diff.TotalSeconds / runs);
+    Console.WriteLine("ooooooooooooooooooooooooooooooooo");
+}
 // Reference: https://stackoverflow.com/a/1183086/8902440
 // & https://stackoverflow.com/a/51241629/8902440
 public static class Extension
