@@ -45,7 +45,8 @@ class Board
         // Console.WriteLine("Filled start sudoku.");
         // this.Print();
     }
- 
+
+    //returns from the flat array arrays with the indexes, sorted in blocks. FI: the numbers  [0, 1, 2, 9, 10, 11, 18, 19, 20] are in block 0
     public void UpdateBlocks(bool onlySwappableNumbers = false)
     {
         this.blocks = new List<List<int>>();
@@ -62,7 +63,7 @@ class Board
         {
 
             blockNumber = (int)((this.sudoku[i].Row / 3) * 3) + (int)((this.sudoku[i].Column) / 3);
-            // Console.WriteLine("i: " + i + "; nummerblok: " + nummerBlok + "; first: " + (int)((this.sudoku[i].Row / 3) * 3) + "; second: " + (int)((this.sudoku[i].Column) / 3));
+          
             if (onlySwappableNumbers) {
                 if (this.sudoku[i].Swappable) {
                     this.blocks[blockNumber].Add(i);
@@ -114,7 +115,6 @@ class Board
                     row += "|";
                 }
                 if(sudoku[j+(i*numberOfRows)].Swappable == false) {
-                    // "\x1b[36m" geeft de kleur blauw aan niet verplaatsbare getallen
                     row += "\x1b[36m" + sudoku[j+(i*numberOfRows)].Number.ToString() + "\x1b[0m ";
                 } else {
                     row += sudoku[j+(i*numberOfRows)].Number.ToString() + " ";
@@ -148,19 +148,18 @@ class Board
     } 
 
 
-    // Bepaal de evaluatie waarde van een sudoku
-    // We gebruiken hashsets omdat hier alleen unieke elementen inzitten. Bij lengte 9 zullen dus alle getallen 1-9 hierin voorkomen.
+    //determines the evaluation value
     public int CalculateEvaluatie() {
         Dictionary<string, int> evaluations =  new Dictionary<string, int>(); // Dictionary bevat de evaluatiewaarden voor elke row en column.
         
-        int row = 0; // duidt de huidige row aan
-        int column = -1; //duidt de huidige column aan. -1 door de werking van het algoritme
-        int nodeNumber; // De variabele die het getal van het desbetreffende vakje onthoud
+        int row = 0; // current row
+        int column = -1; //current column
+        int nodeNumber; // number of the current node 
 
-        // We gaan in feite horizontaal door de sudoku heen, dus er is maar 1 hashset voor de rows nodig.
+        // we loop through the sudoku horizontally
         HashSet<int> rowContent = new HashSet<int>();
 
-        // Initialise de hashsets voor elk van de colulmns
+        // Initialise hashset for every column
         HashSet<int>[] cols = new HashSet<int>[9];
         for (int j = 0; j < cols.Length; j++)
         {
@@ -170,7 +169,6 @@ class Board
         // Loop door de hele sudoku heen
         for (int i = 1; i <= this.sudoku.Length; i++)
         {
-            // Console.WriteLine("row: " + row + "; " + sudoku.sudoku[i - 1].Getal);
             nodeNumber = this.sudoku[i - 1].Number; // Pak het huidige vakje met getal
             rowContent.Add(nodeNumber); // Voeg het getal toe aan de hashset voor deze row.
             column = column + 1; // Verplaats de column pointer 1 naar rechts
@@ -186,64 +184,60 @@ class Board
             if((i - 1) % 9 == 0) { 
                 column = 0;
             }
-            cols[column].Add(nodeNumber); // Update de desbetreffende hashset voor deze column met het getal in dit vakje voor deze column
+            cols[column].Add(nodeNumber); 
         }
         
-        // Loop door alle hashsets van de columns heen
+        // loops through all hashsets
         for (int j = 0; j < cols.Length; j++)
         {
-            evaluations.Add("c"+ j ,9 - cols[j].Count); // Zet het aantal missende getallen voor de desbetreffende column
+            evaluations.Add("c"+ j ,9 - cols[j].Count); // sets the amount of missing values
         }
 
-        // Loop door alle rows en columns met bijbehorende aantal missende getallen en tel deze bij elkaar op.
-        // Console.WriteLine("print waardes van evaluaties");
+        //loops through the rows and columns with missing correct values and counts these
+
         int evaluationValue = 0;
         foreach(KeyValuePair<string, int> row_eval in evaluations) {
-            // Console.WriteLine(row_eval.Key + ": " + row_eval.Value);
             evaluationValue += row_eval.Value;
         }
         
-        // Console.WriteLine("Evaluatie waarde: " + evaluatie_waarde);
         this.evaluationValues = evaluations;
         this.Evaluation = evaluationValue;
 
         return evaluationValue;
     }
 
-    // In plaats van voor een veranderde sudoku alle evaluaties opnieuw te berekenen, kunnen ook alleen de desbetreffende evaluaties voor
-    // de verandere rows en columns herberekend worden.
+    // UpdateEvaluation differs from CalculateEvalution, because it only calculates the updates evaluation values for the changed rows and columns
     public int UpdateEvaluation(Coordinate swap_1, Coordinate swap_2, bool verbose = false) {
-        // Initialise de start stap waarden voor beide rows en columns
-        // Console.WriteLine(swap_1 + " : " + swap_2);
+        // Initialise the start step values for rows and columns
         
         int startColumn1 = swap_1.X;
         int startRow1 = swap_1.Y;
         int startColumn2 = swap_2.X;
         int startRow2 = swap_2.Y;
 
-        // Console.WriteLine("start c1: " + start_c_1 + "; r1: " + start_r_1 + "; c2: " + start_c_2 + "; r2: " + start_r_2);
-
+ 
         int column1;
         int row1;
         int column2;
         int row2;
 
-        // Hashset die de verschillende getallen van beide rows en columns gaan bevatten
+        // Hashset for different numbers for rows and columns
         HashSet<int> column1Content = new HashSet<int>();
         HashSet<int> row1Content = new HashSet<int>();
         HashSet<int> col2Content = new HashSet<int>();
         HashSet<int> row2Content = new HashSet<int>();
 
-        // rows en columns zijn elk van lengte 9, dus loopen we alleen over de waarden die veranderd zijn.
+        //rows and columns are of lenght 9, so we loop on those values
         for (int i = 0; i < 9; i++)
         {
-            // De posities in de sudoku-array die in de veranderde rows en columns zitten
+            // Tge positions of the sudoku array in the changed row/column
             column1 = startColumn1 + (i * 9);
             row1 = (startRow1 * 9) + i;
             column2 = startColumn2 + (i * 9);
             row2 = (startRow2 * 9) + i;
 
-            // Voeg het getal van de betreffende vakjes toe aan de betreffende row of column hashset
+            //Add the number to the relevant row/column
+          
             column1Content.Add(this.sudoku[column1].Number);
             row1Content.Add(this.sudoku[row1].Number);
             col2Content.Add(this.sudoku[column2].Number);
@@ -255,7 +249,7 @@ class Board
             }
         }
 
-        // Herberekend het aantal missende getallen.
+        // recalculates the values per column/row
         if (startColumn1 == startColumn2)
         {
             this.evaluationValues["c" + startColumn1] = 9 - column1Content.Count;
@@ -272,10 +266,10 @@ class Board
         }
 
 
-        // Herbereken de totale evaluatiewaarde
+        // recalculates the evaluation_valuation
         int updated_evaluatie_waarde = 0;
         foreach(KeyValuePair<string, int> row_eval in this.evaluationValues) {
-            // Console.WriteLine(row_eval.Key + ": " + row_eval.Value);
+           
             updated_evaluatie_waarde += row_eval.Value;
         }
 
